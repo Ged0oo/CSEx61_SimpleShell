@@ -7,5 +7,41 @@ void main()
 
 void runShell()                                                                  
 {
-        printf("Hello_World\n");
+        int flag = 1;
+        do
+        {
+                input_t input = builtin;
+                char cmd[MAX_LENGTH] = {};
+                char *argv[MAX_ARGS] = {};
+
+                ReadInput(cmd);
+                RecordInput(cmd);
+                ParseInput(cmd, argv);
+                EvaluateExpression(argv);
+                input = CheckInput(argv[0]);
+
+                if((!strcmp(argv[0], "exit"))  &&  argv[0])
+                {
+                        flag = 0;
+                        continue;
+                }
+
+                switch(input)
+                {
+                        case builtin:
+                                executeBuiltinCommand();
+                                break;
+
+                        case executable:
+                                executeExecutableCommand();
+                                break;
+
+                        default :
+                                break;
+                }
+
+        }
+        while(flag);
+
+        exit(0);
 }
