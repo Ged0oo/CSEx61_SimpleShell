@@ -17,12 +17,12 @@ void runShell()
                 ReadInput(cmd);
                 RecordInput(cmd);
                 ParseInput(cmd, argv);
-                
+                EvaluateExpression(argv);
+                //input = CheckInput(argv[0]);
+
                 for (int i = 0; argv[i] != NULL; i++)
                         printf("Argument %d: %s\n", i, argv[i]);
-
-                //EvaluateExpression(argv);
-                //input = CheckInput(argv[0]);
+    
 
                 if((!strcmp(argv[0], "exit"))  &&  argv[0])
                 {
@@ -102,4 +102,17 @@ void ParseInput(char cmd[], char *argv[])
             arg = strtok(arg, "\"");
         }
     }
+}
+
+void EvaluateExpression(char *argv[])
+{
+        int i;
+        for(i = 1 ; argv[i] != NULL ; i++)
+        {
+                if(*argv[i] == '$')
+                {
+                        *argv[i]++ = '\n';
+                        argv[i] = getenv(argv[i]);
+                }
+        }
 }
