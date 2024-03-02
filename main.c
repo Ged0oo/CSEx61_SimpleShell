@@ -16,9 +16,9 @@ void runShell()
 
                 ReadInput(cmd);
                 RecordInput(cmd);
-                ParseInput(cmd, argv);
-                EvaluateExpression(argv);
-                input = CheckInput(argv[0]);
+                //ParseInput(cmd, argv);
+                //EvaluateExpression(argv);
+                //input = CheckInput(argv[0]);
 
                 if((!strcmp(argv[0], "exit"))  &&  argv[0])
                 {
@@ -29,11 +29,11 @@ void runShell()
                 switch(input)
                 {
                         case builtin:
-                                executeBuiltinCommand();
+                                //executeBuiltinCommand();
                                 break;
 
                         case executable:
-                                executeExecutableCommand();
+                                //executeExecutableCommand();
                                 break;
 
                         default :
@@ -44,4 +44,28 @@ void runShell()
         while(flag);
 
         exit(0);
+}
+
+void ReadInput(char *cmd)
+{
+        printf("Nagy@Shell > ");
+        fgets(cmd, MAX_LENGTH, stdin);
+        int len = strcspn(cmd, "\n");
+        cmd[len] = '\0';
+}
+
+void RecordInput(char cmd[])
+{
+        FILE *file;
+        file = fopen(HISTORY, "a+");
+        if(file)
+        {
+                fprintf(file, "%s\n", cmd);
+                fclose(file);
+        }
+        else
+        {
+                printf("Failed to Record Input Command.\n");
+                return;
+        }
 }

@@ -13,7 +13,7 @@
 #define MAX_ARGS        256
 #define SLEEP_PERIOD    200
 #define LOGS            "/home/nagy/Desktop/nagy/SimpleShell/shellLOGS.log"
-#define HISToRY         "/home/nagy/Desktop/nagy/SimpleShell/shellHISTORY"
+#define HISTORY         "/home/nagy/Desktop/nagy/SimpleShell/shellHISTORY"
 
 
 typedef enum
@@ -34,9 +34,9 @@ void runShell();
 void executeBuiltinCommand();
 void executeExecutableCommand();
 
-void ReadInput(char cmd);
-void RecordInput(char cmd);
-void ParseInput(char cmd, char *argv[]);
+void ReadInput(char *cmd);
+void RecordInput(char cmd[]);
+void ParseInput(char cmd[], char *argv[]);
 void EvaluateExpression(char *argv[]);
 input_t CheckInput(char *argv);
 
