@@ -16,7 +16,11 @@ void runShell()
 
                 ReadInput(cmd);
                 RecordInput(cmd);
-                //ParseInput(cmd, argv);
+                ParseInput(cmd, argv);
+                
+                for (int i = 0; argv[i] != NULL; i++)
+                        printf("Argument %d: %s\n", i, argv[i]);
+
                 //EvaluateExpression(argv);
                 //input = CheckInput(argv[0]);
 
@@ -68,4 +72,34 @@ void RecordInput(char cmd[])
                 printf("Failed to Record Input Command.\n");
                 return;
         }
+}
+
+void ParseInput(char cmd[], char *argv[])
+{
+    int argc = 0;
+    int len = (int)strlen(cmd);
+    char *arg = strtok(cmd, " "), *index;
+
+    while (argc < MAX_ARGS && arg != NULL) 
+    {
+        argv[argc++] = arg;
+        arg = strtok(NULL, " ");
+        
+        /* 
+         * Handling Quoted Arguments. 
+         * If new token (arg) isn't NULL and contains a double quote (")
+        */
+         
+        if (arg && (index = strchr(arg, '"')) != NULL) 
+        {
+            // inserts space after the end of the current token
+            *(arg + strlen(arg)) = ' ';
+
+            // Removing Opening Quote
+            memmove(index, index+1, len - (index - cmd));
+
+            // Extract Quoted Argument
+            arg = strtok(arg, "\"");
+        }
+    }
 }
