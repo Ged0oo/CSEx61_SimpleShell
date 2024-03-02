@@ -224,7 +224,7 @@ void executeBuiltinCommand(char *argv[])
                         break;
                         
                 case history :
-                        //historyCommand(argv);
+                        historyCommand(argv);
                         break;
                         
                 case export :
@@ -301,5 +301,19 @@ void exportCommand(char *argv[])
 
 void historyCommand(char *argv[])
 {
+        FILE *file = fopen(HISTORY, "r");
+        if(file)
+        {
+                size_t length;
+                char *line;
 
+                while(getline(&line, &length, file) != -1)
+                        printf("%s", line);
+                fclose(file);
+        }
+        else
+        {
+                ExportError("History File");
+                return;
+        }
 }
