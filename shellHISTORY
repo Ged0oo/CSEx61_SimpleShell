@@ -63,3 +63,10 @@ pwd
 ps
 kill -9 12688
 ps
+hek
+pwd
+[A
+fff
+cd ../
+cd ./
+ls ../

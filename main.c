@@ -2,6 +2,7 @@
 
 void main()     
 {
+        printf("\n\nIt's Terminal.\n");
         chdir(getenv("PWD"));
         runShell();
 }
@@ -18,12 +19,11 @@ void runShell()
                 ReadInput(cmd);
                 if(cmd[0] == '\0')
                         continue;
-                
+
                 RecordInput(cmd);
                 ParseInput(cmd, argv);
                 EvaluateExpression(argv);
                 input = CheckInput(argv[0]);
-
                 
                 if((!strcmp(argv[0], "exit"))  &&  argv[0])
                 {
@@ -47,13 +47,21 @@ void runShell()
 
         }
         while(flag);
-
         exit(0);
 }
 
 void ReadInput(char *cmd)
 {
-        printf("Nagy@Shell > ");
+        char cwd[1024];
+        getcwd(cwd, sizeof(cwd));
+
+        printf("\033[0;33m");
+        printf("Nagy@Shell : ~");
+        
+        printf("\033[0;32m");
+        printf("%*s > ", (int)strlen(cwd) - 10, cwd + 10);
+        
+        printf("\033[0m");
         fgets(cmd, MAX_LENGTH, stdin);
         int len = strcspn(cmd, "\n");
         cmd[len] = '\0';
