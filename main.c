@@ -220,7 +220,7 @@ void executeBuiltinCommand(char *argv[])
                         break;
 
                 case echo :
-                        //echoCommand(argv);
+                        echoCommand(argv);
                         break;
                         
                 case history :
@@ -241,7 +241,7 @@ command_t CheckBuiltinCommand(char *arg)
                 ret = cd;
 
         else if (arg && (!strcmp(arg, "echo")))
-                ret = cd;
+                ret = echo;
 
         else if (arg && (!strcmp(arg, "export")))
                 ret = export;
@@ -286,7 +286,12 @@ void cdCommand(char *argv[])
 
 void echoCommand(char *argv[])
 {
-
+        int i=1;
+        while(argv[i])
+        {
+                printf("%s ", argv[i++]);
+        }
+        printf("\n");
 }
 
 void exportCommand(char *argv[])

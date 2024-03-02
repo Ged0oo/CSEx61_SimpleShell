@@ -82,3 +82,8 @@ cd ~
 cd ../
 cd ./SimpleShell
 ls
+echo hello world
+[A[A
+echo hellow world
+echo jj
+echo hello woerld
