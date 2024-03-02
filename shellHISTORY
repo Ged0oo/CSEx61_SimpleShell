@@ -70,3 +70,15 @@ fff
 cd ../
 cd ./
 ls ../
+cd ~/
+ls
+cd -
+cd ~
+cd ~
+cd
+cd ~
+cd 
+cd ~
+cd ../
+cd ./SimpleShell
+ls

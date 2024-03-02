@@ -26,6 +26,8 @@ typedef enum
 
 typedef enum
 {
+        cd,
+        echo,
         export,
         history
 }command_t;
@@ -43,6 +45,12 @@ input_t CheckInput(char *arg);
 
 void ExportError(char error[]);
 void ParseArguments(char *args[], char *argv[]);
+command_t CheckBuiltinCommand(char *arg);
+
+void cdCommand(char *argv[]);
+void echoCommand(char *argv[]);
+void exportCommand(char *argv[]);
+void historyCommand(char *argv[]);
 
 #endif //__MAIN_H__
 

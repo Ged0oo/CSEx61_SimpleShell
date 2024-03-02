@@ -34,7 +34,7 @@ void runShell()
                 switch(input)
                 {
                         case builtin:
-                                //executeBuiltinCommand(argv);
+                                executeBuiltinCommand(argv);
                                 break;
 
                         case executable:
@@ -206,4 +206,95 @@ void ParseArguments(char *args[], char *argv[])
                         arg = strtok(NULL, " ");
                 }
         }
+}
+
+void executeBuiltinCommand(char *argv[])
+{
+        command_t cmd;
+        cmd = CheckBuiltinCommand(argv[0]);
+
+        switch(cmd)
+        {
+                case cd :
+                        cdCommand(argv);
+                        break;
+
+                case echo :
+                        //echoCommand(argv);
+                        break;
+                        
+                case history :
+                        //historyCommand(argv);
+                        break;
+                        
+                case export :
+                        //exportCommand(argv);
+                        break;
+        }
+}
+
+command_t CheckBuiltinCommand(char *arg)
+{
+        command_t ret;
+
+        if (arg && (!strcmp(arg, "cd")))
+                ret = cd;
+
+        else if (arg && (!strcmp(arg, "echo")))
+                ret = cd;
+
+        else if (arg && (!strcmp(arg, "export")))
+                ret = export;
+
+        else if (arg && (!strcmp(arg, "history")))
+                ret = history;
+
+        return ret;
+}
+
+void cdCommand(char *argv[])
+{
+        char *curDirection;
+        char prevDirection[MAX_LENGTH], direction[MAX_LENGTH], tempDirection[MAX_LENGTH];
+
+        if((!strcmp(argv[1], "~")) || (!argv[1]))
+        {
+                curDirection = getenv("HOME");
+                printf("%s\n", curDirection);
+        }
+        else if(!strcmp(argv[1], "-")) 
+        {
+                memcpy(direction, prevDirection, sizeof(prevDirection));
+                curDirection = direction;
+                printf("%s\n", curDirection);
+        }
+        else
+        {
+                curDirection = argv[1];
+        }
+
+        getcwd(tempDirection, sizeof(tempDirection));
+        if(chdir(curDirection))
+        {
+                ExportError("cd");
+                return;
+        }
+
+        memcpy(prevDirection, tempDirection, sizeof(tempDirection));
+}
+
+
+void echoCommand(char *argv[])
+{
+
+}
+
+void exportCommand(char *argv[])
+{
+
+}
+
+void historyCommand(char *argv[])
+{
+
 }
