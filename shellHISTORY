@@ -89,3 +89,23 @@ echo jj
 echo hello woerld
 history
 history
+export x=5
+echo $PATH
+echo $x
+export x=5
+$x
+echo $x
+cat $x
+cat $PATH
+echo $PATH
+export hello=6
+export x=6
+[A
+export x=6
+exho $x
+cat $x
+echo x
+cat x
+cat $x
+export x=6
+echo $x

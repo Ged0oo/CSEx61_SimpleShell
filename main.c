@@ -228,7 +228,7 @@ void executeBuiltinCommand(char *argv[])
                         break;
                         
                 case export :
-                        //exportCommand(argv);
+                        exportCommand(argv);
                         break;
         }
 }
@@ -296,7 +296,20 @@ void echoCommand(char *argv[])
 
 void exportCommand(char *argv[])
 {
+        char *value, *identifier;
+        int i = 1;
 
+        while(argv[i])
+        {
+                if((value = strchr(argv[i], '=')) != NULL)
+                {
+                        *value = '\0';
+                        identifier = argv[i++],
+                        value++;
+                        printf("set %s = %s\n", identifier, value);
+                        setenv(identifier, value, 1);
+                }
+        }
 }
 
 void historyCommand(char *argv[])
