@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 #include <sys/wait.h>
 
 
@@ -31,14 +32,17 @@ typedef enum
 
 
 void runShell();
-void executeBuiltinCommand();
-void executeExecutableCommand();
+void executeBuiltinCommand(char *argv[]);
+void executeExecutableCommand(char *argv[]);
 
 void ReadInput(char *cmd);
 void RecordInput(char cmd[]);
 void ParseInput(char cmd[], char *argv[]);
 void EvaluateExpression(char *argv[]);
-input_t CheckInput(char *argv);
+input_t CheckInput(char *arg);
+
+void ExportError(char error[]);
+void ParseArguments(char *args[], char *argv[]);
 
 #endif //__MAIN_H__
 

@@ -2,6 +2,7 @@
 
 void main()     
 {
+        chdir(getenv("PWD"));
         runShell();
 }
 
@@ -15,15 +16,15 @@ void runShell()
                 char *argv[MAX_ARGS] = {};
 
                 ReadInput(cmd);
+                if(cmd[0] == '\0')
+                        continue;
+                
                 RecordInput(cmd);
                 ParseInput(cmd, argv);
                 EvaluateExpression(argv);
-                //input = CheckInput(argv[0]);
+                input = CheckInput(argv[0]);
 
-                for (int i = 0; argv[i] != NULL; i++)
-                        printf("Argument %d: %s\n", i, argv[i]);
-    
-
+                
                 if((!strcmp(argv[0], "exit"))  &&  argv[0])
                 {
                         flag = 0;
@@ -33,11 +34,11 @@ void runShell()
                 switch(input)
                 {
                         case builtin:
-                                //executeBuiltinCommand();
+                                //executeBuiltinCommand(argv);
                                 break;
 
                         case executable:
-                                //executeExecutableCommand();
+                                executeExecutableCommand(argv);
                                 break;
 
                         default :
@@ -113,6 +114,88 @@ void EvaluateExpression(char *argv[])
                 {
                         *argv[i]++ = '\n';
                         argv[i] = getenv(argv[i]);
+                }
+        }
+}
+
+input_t CheckInput(char *arg)
+{
+        input_t ret;
+        if
+        (
+                (arg && (!strcmp(arg, "cd")))      || 
+                (arg && (!strcmp(arg, "echo")))    || 
+                (arg && (!strcmp(arg, "history"))) || 
+                (arg && (!strcmp(arg, "export")))  
+        ) 
+                ret = builtin;
+        else 
+                ret = executable;
+        return ret;
+}
+
+void executeExecutableCommand(char *argv[])
+{
+        pid_t child = fork();
+
+        // Failure
+        if(child < 0)
+        {
+                ExportError("Forking Error");
+        }
+
+        // The Child is Running
+        else if(child == 0)
+        {
+                char *args[MAX_LENGTH] = {};
+                
+                // Background Execution
+                if(argv[1]  && (!strcmp(argv[1], "&")))
+                {
+                        argv[1] = NULL;
+                        printf("Process : %d", getpid());
+                }
+
+                ParseArguments(args, argv);
+                execvp(args[0], args);
+
+                // Error Upon Return ftom exec
+                ExportError("Execvp Error");
+                exit(0);
+        }
+
+        // The Parent is Running
+        else
+        {
+                // Background Execution
+                // Returns without waiting for Child
+                if(argv[1]  && (!strcmp(argv[1], "&")))
+                        return;
+                waitpid(child, 0, 0);
+        }
+
+}
+
+void ExportError(char error[])
+{
+        perror(error);
+        usleep(SLEEP_PERIOD*1000);
+}
+
+void ParseArguments(char *args[], char *argv[])
+{
+        int argc = 1;
+        char *arg;
+        args[0] = argv[0];
+
+        for(int i=1 ; i < MAX_ARGS ; i++)
+        {
+                arg = strtok(argv[i], " ");
+
+                while (argc < MAX_ARGS && arg != NULL) 
+                {
+                        args[argc++] = arg;
+                        arg = strtok(NULL, " ");
                 }
         }
 }
