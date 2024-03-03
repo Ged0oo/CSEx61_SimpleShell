@@ -109,3 +109,33 @@ cat x
 cat $x
 export x=6
 echo $x
+cd ~/
+cd ~
+cd -
+cd ~
+cd -
+ls
+ 
+ls
+cd ./
+cd ../
+cd -
+cd ~
+cd -
+export HEY=233
+echo $HEY
+ps
+kill -9 5932
+vim main.h &
+ls
+cd ~
+cd -
+cd ../
+cd ./SimpleShell
+echo Hey all this linux time
+ps
+tty
+pwd
+export VAR=255
+echo $VAR
+echo Have nice time :)

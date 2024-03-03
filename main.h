@@ -16,6 +16,9 @@
 #define LOGS            "/home/nagy/Desktop/nagy/SimpleShell/shellLOGS.log"
 #define HISTORY         "/home/nagy/Desktop/nagy/SimpleShell/shellHISTORY"
 
+#define ORANGE          "\033[0;33m"
+#define GREEN           "\033[0;32m"
+#define WHITE           "\033[0m"
 
 typedef enum
 {

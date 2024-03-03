@@ -2,10 +2,13 @@
 
 void main()     
 {
-        printf("\n\nIt's Terminal.\n");
+        printf("\n********************************************\n");
+        printf("*********** This is Terminal. **************\n");
+        printf("********************************************\n\n");
         chdir(getenv("PWD"));
         runShell();
 }
+
 
 void runShell()                                                                  
 {
@@ -50,22 +53,24 @@ void runShell()
         exit(0);
 }
 
+
 void ReadInput(char *cmd)
 {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
 
-        printf("\033[0;33m");
+        printf(ORANGE);
         printf("Nagy@Shell : ~");
         
-        printf("\033[0;32m");
+        printf(GREEN);
         printf("%*s > ", (int)strlen(cwd) - 10, cwd + 10);
         
-        printf("\033[0m");
+        printf(WHITE);
         fgets(cmd, MAX_LENGTH, stdin);
         int len = strcspn(cmd, "\n");
         cmd[len] = '\0';
 }
+
 
 void RecordInput(char cmd[])
 {
@@ -82,6 +87,7 @@ void RecordInput(char cmd[])
                 return;
         }
 }
+
 
 void ParseInput(char cmd[], char *argv[])
 {
@@ -113,6 +119,7 @@ void ParseInput(char cmd[], char *argv[])
     }
 }
 
+
 void EvaluateExpression(char *argv[])
 {
         int i;
@@ -125,6 +132,7 @@ void EvaluateExpression(char *argv[])
                 }
         }
 }
+
 
 input_t CheckInput(char *arg)
 {
@@ -141,6 +149,7 @@ input_t CheckInput(char *arg)
                 ret = executable;
         return ret;
 }
+
 
 void executeExecutableCommand(char *argv[])
 {
@@ -184,11 +193,13 @@ void executeExecutableCommand(char *argv[])
 
 }
 
+
 void ExportError(char error[])
 {
         perror(error);
         usleep(SLEEP_PERIOD*1000);
 }
+
 
 void ParseArguments(char *args[], char *argv[])
 {
@@ -207,6 +218,7 @@ void ParseArguments(char *args[], char *argv[])
                 }
         }
 }
+
 
 void executeBuiltinCommand(char *argv[])
 {
@@ -233,6 +245,7 @@ void executeBuiltinCommand(char *argv[])
         }
 }
 
+
 command_t CheckBuiltinCommand(char *arg)
 {
         command_t ret;
@@ -252,6 +265,7 @@ command_t CheckBuiltinCommand(char *arg)
         return ret;
 }
 
+
 void cdCommand(char *argv[])
 {
         char *curDirection;
@@ -260,13 +274,11 @@ void cdCommand(char *argv[])
         if((!strcmp(argv[1], "~")) || (!argv[1]))
         {
                 curDirection = getenv("HOME");
-                printf("%s\n", curDirection);
         }
         else if(!strcmp(argv[1], "-")) 
         {
                 memcpy(direction, prevDirection, sizeof(prevDirection));
                 curDirection = direction;
-                printf("%s\n", curDirection);
         }
         else
         {
@@ -274,6 +286,7 @@ void cdCommand(char *argv[])
         }
 
         getcwd(tempDirection, sizeof(tempDirection));
+
         if(chdir(curDirection))
         {
                 ExportError("cd");
@@ -294,6 +307,7 @@ void echoCommand(char *argv[])
         printf("\n");
 }
 
+
 void exportCommand(char *argv[])
 {
         char *value, *identifier;
@@ -306,11 +320,11 @@ void exportCommand(char *argv[])
                         *value = '\0';
                         identifier = argv[i++],
                         value++;
-                        printf("set %s = %s\n", identifier, value);
                         setenv(identifier, value, 1);
                 }
         }
 }
+
 
 void historyCommand(char *argv[])
 {
