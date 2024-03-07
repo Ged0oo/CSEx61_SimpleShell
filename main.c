@@ -430,27 +430,29 @@ command_t CheckBuiltinCommand(char *arg)
  */
 void cdCommand(char *argv[])
 {
-		// Pointer to the target directory
+	// Pointer to the target directory
         char *curDirection;
         char prevDirection[MAX_LENGTH], direction[MAX_LENGTH], tempDirection[MAX_LENGTH];
-		
-		// Check if the argument is '~' or not provided
-        if((!strcmp(argv[1], "~")) || (!argv[1]))
+	
+
+        // Check if the argument is '~' or not provided
+        if((!argv[1]) || (!strcmp(argv[1], "~")))
         {
-				// Get the home directory path
+		// Get the home directory path
                 curDirection = getenv("HOME");
         }
+
 		
-		// Check if the argument is '-'
+	// Check if the argument is '-'
         else if(!strcmp(argv[1], "-")) 
         {
-				// Set the target directory to the previous directory
+		// Set the target directory to the previous directory
                 memcpy(direction, prevDirection, sizeof(prevDirection));
                 curDirection = direction;
         }
         else
         {
-				// Set the target directory to the provided argument
+		// Set the target directory to the provided argument
                 curDirection = argv[1];
         }
 		
@@ -459,7 +461,7 @@ void cdCommand(char *argv[])
 
         if(chdir(curDirection))
         {
-				// If changing directory fails, export an error message
+		// If changing directory fails, export an error message
                 ExportError("cd");
                 return;
         }

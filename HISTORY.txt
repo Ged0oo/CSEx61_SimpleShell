@@ -1,11 +1,67 @@
-ls 
+mkdir test
+cd ./test
+touch file1
+ls
+cd ../
+ cd ~
+ls
+cd -
+ls
+ls -l -a -h
+export x="-l -a -h"
+ls $x
+gedit
+sjjs
+ls
+gedit &
+ls
+ps
+kill -9 21530
+echo "Hello_World"
+echo hey all
+echo $x
+heyy
+history
+ls
 cd ../
 ls
-cd ./SimpleShell
+cd -
 ls
-rm shellHISTORY shellLOGS.log
-ls
-history
-cat LOGS.log
-git add .
-git commit -m "last dance begad"
+pwd
+cd ./home/nage/Desktop
+cd ../home/nagy/Desktop
+cd ./home/nagy/Desktop
+cd ./home/nagy/Desktop/
+cd
+cd
+cd 
+cd cd
+cd
+cd
+cd ~
+cd
+cd
+cd 
+cd 
+cd    
+cd l
+cd
+cd 
+cd   
+[A[A
+cd 
+cd
+cd 
+cd
+cd
+cd ~
+cd -
+cd
+cd
+cd 
+cd
+cd
+cd
+cd
+cd -
+cd ~
