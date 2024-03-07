@@ -1,0 +1,11 @@
+ls 
+cd ../
+ls
+cd ./SimpleShell
+ls
+rm shellHISTORY shellLOGS.log
+ls
+history
+cat LOGS.log
+git add .
+git commit -m "last dance begad"
