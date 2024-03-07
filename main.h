@@ -7,14 +7,16 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <ncurses.h>
+#include <curses.h>
 #include <sys/wait.h>
 
-
+#define MAX_HISTORY     1024
 #define MAX_LENGTH      256
 #define MAX_ARGS        256
 #define SLEEP_PERIOD    200
-#define LOGS            "/home/nagy/Desktop/nagy/SimpleShell/shellLOGS.log"
-#define HISTORY         "/home/nagy/Desktop/nagy/SimpleShell/shellHISTORY"
+#define LOGS            "/home/nagy/Desktop/nagy/SimpleShell/LOGS.log"
+#define HISTORY         "/home/nagy/Desktop/nagy/SimpleShell/HISTORY.txt"
 
 #define ORANGE          "\033[0;33m"
 #define GREEN           "\033[0;32m"
@@ -30,10 +32,17 @@ typedef enum
 typedef enum
 {
         cd,
-        echo,
+        echoo,
         export,
         history
 }command_t;
+
+
+void on_child_exit();
+void setup_environment();
+void reap_child_zombie();
+void WriteLogFile(char line[]);
+void register_child_signal(void (*on_child_exit)(int));
 
 
 void runShell();

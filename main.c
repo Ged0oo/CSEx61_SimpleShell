@@ -1,12 +1,55 @@
 #include "main.h"
 
-void main()     
+// Global variable to store command history
+char hist[MAX_HISTORY][MAX_LENGTH];
+int history_count = 0;
+
+int main()     
 {
         printf("\n********************************************\n");
         printf("*********** This is Terminal. **************\n");
         printf("********************************************\n\n");
-        chdir(getenv("PWD"));
+        register_child_signal(on_child_exit);
+        setup_environment();
         runShell();
+        return 0;
+}
+
+
+void register_child_signal(void (*on_child_exit)(int)) 
+{
+    signal(SIGCHLD, on_child_exit);
+}
+
+
+void setup_environment() 
+{
+    chdir(getenv("PWD"));
+}
+
+
+void on_child_exit()
+{
+    reap_child_zombie();
+    WriteLogFile("Child terminated\n");
+}
+
+void reap_child_zombie()
+{
+    while (waitpid((pid_t)(-1), 0, WNOHANG) > 0);
+}
+
+
+void WriteLogFile(char line[])
+{
+    FILE *log;
+
+    log = fopen(LOGS, "a");
+    if (log == NULL)
+        return;
+
+    fprintf(log, "%s", line);
+    fclose(log);
 }
 
 
@@ -72,20 +115,20 @@ void ReadInput(char *cmd)
 }
 
 
-void RecordInput(char cmd[])
+void RecordInput(char cmd[]) 
 {
-        FILE *file;
-        file = fopen(HISTORY, "a+");
-        if(file)
-        {
-                fprintf(file, "%s\n", cmd);
-                fclose(file);
-        }
-        else
-        {
-                printf("Failed to Record Input Command.\n");
-                return;
-        }
+    strcpy(hist[history_count++ % MAX_HISTORY], cmd);
+    FILE *file = fopen(HISTORY, "a");
+    if (file) 
+    {
+        fprintf(file, "%s\n", cmd);
+        fclose(file);
+    } 
+    else 
+    {
+        printf("Failed to Record Input Command.\n");
+        return;
+    }
 }
 
 
@@ -140,7 +183,7 @@ input_t CheckInput(char *arg)
         if
         (
                 (arg && (!strcmp(arg, "cd")))      || 
-                (arg && (!strcmp(arg, "echo")))    || 
+                (arg && (!strcmp(arg, "echoo")))    || 
                 (arg && (!strcmp(arg, "history"))) || 
                 (arg && (!strcmp(arg, "export")))  
         ) 
@@ -231,7 +274,7 @@ void executeBuiltinCommand(char *argv[])
                         cdCommand(argv);
                         break;
 
-                case echo :
+                case echoo :
                         echoCommand(argv);
                         break;
                         
@@ -253,8 +296,8 @@ command_t CheckBuiltinCommand(char *arg)
         if (arg && (!strcmp(arg, "cd")))
                 ret = cd;
 
-        else if (arg && (!strcmp(arg, "echo")))
-                ret = echo;
+        else if (arg && (!strcmp(arg, "echoo")))
+                ret = echoo;
 
         else if (arg && (!strcmp(arg, "export")))
                 ret = export;
